@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+  h1 Usuario Nuevo
+  br
+  a(href='/api/v1/usuarios') Atrás
+  br
+  form(action='/api/v1/usuarios/'+usuario.id + '?_method=PUT' method='POST')
+    label Nombre 
+    input(name="nombre" type="text" required="true" placeholder="Nombre del Cliente" value=usuario.nombre) 
+    br
+    label Correo-Electrónico 
+    input(name="email" type="text" required="true" placeholder="Email del Cliente" value=usuario.email
+    br
+    label Clave
+    input(name="clave" type="text" required="true" placeholder="Clave del Cliente" value=usuario.clave
+    br
+    input(type="submit")

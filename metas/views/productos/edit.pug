@@ -1,0 +1,12 @@
+extends ../layout
+
+block content
+  h1 Producto Nuevo
+  br
+  a(href='/api/v1/productos') Atrás
+  br
+  form(action='/api/v1/productos/'+producto.id + '?_method=PUT' method='POST')
+    label Descripción 
+    input(name="descripcion" type="text" required="true" placeholder="Descripción del producto" value=producto.descripcion) 
+    br
+    input(type="submit")

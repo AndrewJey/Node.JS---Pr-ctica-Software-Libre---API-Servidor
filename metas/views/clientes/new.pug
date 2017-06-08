@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+  h1 Cliente Nuevo
+  br
+  a(href='/api/v1/clientes') Atrás
+  form(action='/api/v1/clientes' method='POST')
+    label Nombre
+    input(name="nombre" type="text" required="true" placeholder="Nombre del Cliente")
+    br
+    label Correo Electrónico
+    input(name="email" type="text" required="true" placeholder="Email del Cliente")
+    br
+    label Teléfono
+    input(name="telefono" type="text" required="true" placeholder="Telefono del Cliente")
+    br
+    input(type="submit")

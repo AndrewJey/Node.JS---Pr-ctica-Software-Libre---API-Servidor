@@ -1,0 +1,20 @@
+extends ../layout
+
+block content
+  h1 Meta Nueva
+  br
+  a(href='/api/v1/metas') Atrás
+  br
+  form(action='/api/v1/metas/'+meta.id + '?_method=PUT' method='POST')
+    label Descripción 
+    input(name="descripcion" type="text" required="true" placeholder="Descripción de la Meta" value=meta.descripcion) 
+    br
+    label Valor Esperado 
+    input(name="valor_esperado" type="text" required="true" placeholder="Valor Esperado de la Meta" value=meta.valor_esperado
+    br
+    label Fecha Límite
+    input(name="fecha_limite" type="text" required="true" placeholder="Fecha Límite de la Meta" value=meta.fecha_limite
+    br
+    label ID del Producto
+    input(name="producto_id" type="text" required="true" placeholder="ID del Producto para la Meta" value=meta.producto_id
+    input(type="submit")

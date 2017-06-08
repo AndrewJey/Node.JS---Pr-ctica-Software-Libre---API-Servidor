@@ -1,0 +1,28 @@
+extends ../layout
+
+block content
+  h1 Clientes
+  br
+  a(href='/api/v1/clientes/new') Nuevo Cliente
+  br
+  table
+    tr
+      th Nombre
+      th Acciones
+    each cliente in clientes
+      tr
+        td= cliente.nombre
+      th Correo Electrónico
+      th Acciones
+    each cliente in clientes
+      tr
+        td= cliente.email
+      th Teléfono
+      th Acciones
+    each cliente in clientes
+      tr
+        td= cliente.telefono
+        td
+          a(href='/api/v1/clientes/' + cliente.id) Editar
+          form(method="POST" action='/api/v1/clientes/' + cliente.id + '?_method=DELETE')
+            button(type="submit") Eliminar Cliente

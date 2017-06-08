@@ -1,0 +1,28 @@
+extends ../layout
+
+block content
+  h1 Usuarios
+  br
+  a(href='/api/v1/usuarios/new') Nuevo Usuario
+  br
+  table
+    tr
+      th Nombre
+      th Acciones
+    each usuario in usuarios
+      tr
+        td= usuario.nombre
+      th Correo Electrónico
+      th Acciones
+    each usuario in usuarios
+      tr
+        td= usuario.email
+      th Clave
+      th Acciones
+    each usuario in usuarios
+      tr
+        td= usuario.clave
+        td
+          a(href='/api/v1/usuarios/' + usuario.id) Editar
+          form(method="POST" action='/api/v1/usuarios/' + usuario.id + '?_method=DELETE')
+            button(type="submit") Eliminar Usuario

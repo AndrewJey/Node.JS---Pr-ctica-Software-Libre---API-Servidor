@@ -1,0 +1,34 @@
+extends ../layout
+
+block content
+  h1 Metas
+  br
+  a(href='/api/v1/metas/new') Nueva Meta
+  br
+  table
+    tr
+      th Descripción
+      th Acciones
+    each meta in metas
+      tr
+        td= meta.descripcion
+      th Valor Esperado
+      th Acciones
+    each meta in metas
+      tr
+        td= meta.valor_esperado
+      th Fecha Límite
+      th Acciones
+    each meta in metas
+      tr
+        td= meta.fecha_limite
+    tr
+      th ID del Producto
+      th Acciones
+    each meta in metas
+      tr
+        td= meta.producto_id
+        td
+          a(href='/api/v1/metas/' + meta.id) Editar
+          form(method="POST" action='/api/v1/metas/' + meta.id + '?_method=DELETE')
+            button(type="submit") Eliminar Meta
