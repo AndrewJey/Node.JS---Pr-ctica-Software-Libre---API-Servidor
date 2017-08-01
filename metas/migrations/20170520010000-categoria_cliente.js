@@ -9,7 +9,7 @@ module.exports = {
       Example:
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
     */
-    return queryInterface.createTable('productos',
+    return queryInterface.createTable('categoria_clientes',
     {
       id: {
         type: Sequelize.INTEGER,
@@ -18,10 +18,6 @@ module.exports = {
         allowNull: false
       },
        descripcion: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      picture: {
         type: Sequelize.STRING,
         allowNull: false
       },
@@ -40,8 +36,7 @@ module.exports = {
       Return a promise to correctly handle asynchronicity.
 
       Example:
-      return queryInterface.dropTable('users');
     */
-    return queryInterface.dropTable('productos');
+    return queryInterface.dropTable('categoria_clientes');
   }
 };

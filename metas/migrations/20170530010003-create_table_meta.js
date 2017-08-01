@@ -16,13 +16,13 @@ module.exports = {
           primaryKey: true,
           autoIncrement: true,
           allowNull: false
-        },        
+        },
         descripcion: {
           type: Sequelize.STRING,
           allowNull: false
         },
         valor_esperado: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.DOUBLE,
           allowNull: false
         },
         fecha_limite: {
@@ -30,7 +30,7 @@ module.exports = {
           allowNull: false
         },
         producto_id: {
-          type: Sequelize.INTEGER,        
+          type: Sequelize.INTEGER,
           references: {
             model: 'productos',
             key: 'id'
@@ -42,7 +42,7 @@ module.exports = {
         },
         updatedAt: {
           type: Sequelize.DATE
-        }  
+        },
       });
     },
 

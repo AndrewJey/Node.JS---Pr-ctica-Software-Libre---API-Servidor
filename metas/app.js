@@ -5,16 +5,13 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
+var fileUpload = require('express-fileupload');
 
-//DEL SISTEMA: (v.0.1) -auto-generados-
-//var index = require('./routes/index');
-//var users = require('./routes/users');
-
-//PROPIOS: (v.1.1) -primeros en hacerse-
-//var productos = require('./routes/productos');
-//var clientes = require('./routes/clientes');
-//var usuarios = require('./routes/usuarios');
-//var metas = require('./routes/metas');
+var index = require('./routes/index');
+var users = require('./routes/users');
+var products = require('./routes/productos');
+var metas = require('./routes/metas');
+var clients = require('./routes/clientes');
 
 var app = express();
 
@@ -29,38 +26,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(methodOverride('_method'));
+app.use(fileUpload());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//Se requieren y se usan de una vez (v.3.1) -metas.ultima-
-app.use('/', require('./routes'));
-app.use('/api/v1/users', require('./routes/users'));
-app.use('/api/v1/productos', require('./routes/productos'));
-app.use('/api/v1/clientes', require('./routes/clientes'));
-app.use('/api/v1/usuarios', require('./routes/usuarios'));
-app.use('/api/v1/metas', require('./routes/metas'));
-app.use('/api/v1/usuario_meta', require('./routes/usuario_meta'));
-app.use('/api/v1/usuario_meta_valor', require('./routes/usuario_meta_valor'));
-
-//DEL SISTEMA: (v.0) -auto-generados-
-//app.use('/', index);
-//app.use('/users', users);
-
-//PROPIOS: (v.1.1) -primeros en hacerse-
-//app.use('/productos', productos);
-//app.use('/clientes', clientes);
-//app.use('/usuarios', usuarios);
-//app.use('/metas', metas);
-
-//DEL PROFE (NOMENCLATURA OFICIAL): (v.2.0) -metas.metas-
-//app.use('/api/v1', index);
-//app.use('/api/v1/usuarios', usuarios);
-//app.use('/api/v1/productos', productos);
-//app.use('/api/v1/metas', metas);
-//app.use('/api/v1/clientes', clientes);
+app.use('/', index);
+app.use('/users', users);
+app.use('/api/v1/products', products);
+app.use('/api/v1/clients', clients);
+app.use('/metas', metas);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('NO ENCONTRADO: SE PERDIÓ');
+  var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });

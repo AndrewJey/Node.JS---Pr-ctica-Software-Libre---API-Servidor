@@ -2,17 +2,21 @@ extends ../layout
 
 block content
   h1 Cliente Nuevo
-  br
-  a(href='/api/v1/clientes') Atrás
-  br
-  form(action='/api/v1/clientes/'+cliente.id + '?_method=PUT' method='POST')
-    label Nombre 
-    input(name="nombre" type="text" required="true" placeholder="Nombre del Cliente" value=cliente.nombre) 
-    br
-    label Correo-Electrónico 
-    input(name="email" type="text" required="true" placeholder="Email del Cliente" value=cliente.email
-    br
+  a(href="/api/v1/clients") Atrás
+
+  form(action="/api/v1/clients/"+cliente.id + '?_method=PUT' method="POST")
+    label Nombre
+    input(name="nombre" type="text" required="true" placeholder="Nombre" value=cliente.nombre)
+    label Email
+    input(name="email" type="text" required="true" placeholder="Email" value=cliente.email)
     label Teléfono
-    input(name="telefono" type="text" required="true" placeholder="Teléfono del Cliente" value=cliente.telefono
-    br
-    input(type="submit")
+    input(name="telefono" type="text" required="true" placeholder="Teléfono" value=cliente.telefono)
+    label Categoría
+    select(name="categoria_cliente_id" value=cliente.categoria_cliente_id)
+      each categoria in categorias
+        if cliente.categoria_cliente_id === categoria.id
+          option(value=categoria.id selected="true")=categoria.descripcion
+        else
+          option(value=categoria.id)=categoria.descripcion
+    button Salvar
+

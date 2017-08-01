@@ -2,27 +2,23 @@ extends ../layout
 
 block content
   h1 Clientes
-  br
-  a(href='/api/v1/clientes/new') Nuevo Cliente
-  br
+
+  a(href="/api/v1/clients/new") Nuevo
+  a(href="/api/v1/clients/categorias") Ver Categorías
   table
     tr
       th Nombre
-      th Acciones
+      th Email
+      th Teléfono
+      th Categoría
     each cliente in clientes
       tr
         td= cliente.nombre
-      th Correo Electrónico
-      th Acciones
-    each cliente in clientes
-      tr
         td= cliente.email
-      th Teléfono
-      th Acciones
-    each cliente in clientes
-      tr
         td= cliente.telefono
+        td= cliente.descripcion
         td
-          a(href='/api/v1/clientes/' + cliente.id) Editar
-          form(method="POST" action='/api/v1/clientes/' + cliente.id + '?_method=DELETE')
-            button(type="submit") Eliminar Cliente
+          a(href="/api/v1/clients/"+ cliente.id) Editar
+          form(method="POST" action="/api/v1/clients/"+ cliente.id + "?_method=DELETE")
+            button Eliminar
+

@@ -2,11 +2,10 @@ extends ../layout
 
 block content
   h1 Producto Nuevo
-  br
-  a(href='/api/v1/productos') Atrás
-  br
-  form(action='/api/v1/productos' method='POST')
+  a(href="/api/v1/products") Atrás
+
+  form(action="/api/v1/products" method="POST" encType="multipart/form-data")
     label Descripción
-    input(name="descripcion" type="text" required="true" placeholder="Descripción del producto")
-    br
-    input(type="submit")
+    input(name="descripcion" type="text" required="true" placeholder="Descripción")
+    input(type="file" name="picture")
+    button Salvar

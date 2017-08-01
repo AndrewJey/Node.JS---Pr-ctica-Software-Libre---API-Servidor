@@ -9,7 +9,7 @@ module.exports = {
       Example:
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
       */
-      return queryInterface.createTable('usuario_meta',
+      return queryInterface.createTable('usuario_meta_valor',
       {
         id: {
           type: Sequelize.INTEGER,
@@ -18,21 +18,24 @@ module.exports = {
           allowNull: false
         },
 
-        meta_id: {
+        usuario_meta_id: {
           type: Sequelize.INTEGER,
           references: {
-            model: 'metas',
+            model: 'usuario_meta',
             key: 'id'
           },
           allowNull: false
         },
-
-        usuario_id: {
+        cliente_id: {
           type: Sequelize.INTEGER,
           references: {
-            model: 'usuarios',
+            model: 'clientes',
             key: 'id'
           },
+          allowNull: false
+        },
+        valor: {
+          type: Sequelize.DOUBLE,
           allowNull: false
         },
         createdAt: {
@@ -52,6 +55,6 @@ module.exports = {
       Example:
       return queryInterface.dropTable('users');
       */
-      return queryInterface.dropTable('usuario_meta');
+      return queryInterface.dropTable('usuario_meta_valor');
     }
   };

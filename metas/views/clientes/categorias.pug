@@ -1,0 +1,19 @@
+extends ../layout
+
+block content
+  h1 Clientes
+
+  a(href="/api/v1/clients/") Atras
+  table
+    tr
+      th Descripcion
+      th Cantidad de Clientes
+    each categoria in categorias
+      tr
+        td= categoria.descripcion
+        td= categoria.cantidad_clientes
+
+  div#chart
+
+  script(src="/javascripts/highcharts.js")
+  script(src="/javascripts/chart.js")
