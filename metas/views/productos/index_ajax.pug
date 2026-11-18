@@ -1,20 +1,34 @@
 extends ../layout
-
 block content
-  h1 Productos Ajax
-
-  #form
-    label Descripción
+  .heading
+    div
+      h1 Productos
+      p Administra tu catálogo sin recargar la página.
+    button#nuevo(type="button") Nuevo producto
+  form#form.card(hidden)
+    h2#formTitle Nuevo producto
     input#id(type="hidden")
-    input#descripcion(type="text" placeholder="Descripción")
-    button#save Save
-    button#cancel Cancelar
-
-  button#refrescar Refrescar
-  button#nuevo Nuevo
-  table#datos
-    tr
-      th Descripción
-      th Acciones
-
-  script(src="/javascripts/productos_crud.js")
+    label(for="descripcion") Descripción
+    input#descripcion(name="descripcion" maxlength="255" required autocomplete="off")
+    .actions
+      button#save(type="submit") Guardar
+      button#cancel(type="button" class="secondary") Cancelar
+  p#mensaje(role="status" aria-live="polite")
+  label(for="buscar") Buscar producto
+  input#buscar(type="search" autocomplete="off" aria-controls="products-body")
+  .heading
+    p#estado(role="status" aria-live="polite") Cargando productos…
+    button#refrescar(type="button" class="secondary") Actualizar lista
+  .table-scroll(tabindex="0" role="region" aria-label="Productos")
+    table#datos
+      caption.sr-only Productos y acciones
+      thead
+        tr
+          th(scope="col") Descripción
+          th(scope="col") Imagen
+          th(scope="col") Acciones
+      tbody#products-body
+  noscript
+    p Activa JavaScript para administrar la lista o
+      a(href="/api/v1/products/new")  abre el formulario clásico.
+  script(src="/javascripts/productos_crud.js" defer)

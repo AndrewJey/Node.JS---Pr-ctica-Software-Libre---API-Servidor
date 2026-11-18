@@ -1,19 +1,17 @@
 extends ../layout
-
 block content
-  h1 Clientes
-
-  a(href="/api/v1/clients/") Atras
-  table
-    tr
-      th Descripcion
-      th Cantidad de Clientes
-    each categoria in categorias
-      tr
-        td= categoria.descripcion
-        td= categoria.cantidad_clientes
-
-  div#chart
-
-  script(src="/javascripts/highcharts.js")
-  script(src="/javascripts/chart.js")
+  h1 Clientes por categoría
+  p Se incluyen las categorías sin clientes. Los clientes sin categoría no forman parte de estos grupos.
+  if categorias.length === 0
+    p Aún no hay categorías. Consulta RUNNING.md para crear datos de demostración.
+  else
+    table
+      thead
+        tr
+          th(scope="col") Descripción
+          th(scope="col") Cantidad de clientes
+      tbody
+        each categoria in categorias
+          tr
+            td(data-label="Categoría")=categoria.descripcion
+            td(data-label="Clientes")=categoria.cantidad_clientes

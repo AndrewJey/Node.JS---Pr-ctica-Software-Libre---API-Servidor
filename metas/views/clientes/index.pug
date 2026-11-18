@@ -1,24 +1,29 @@
 extends ../layout
-
 block content
-  h1 Clientes
-
-  a(href="/api/v1/clients/new") Nuevo
-  a(href="/api/v1/clients/categorias") Ver Categorías
-  table
-    tr
-      th Nombre
-      th Email
-      th Teléfono
-      th Categoría
-    each cliente in clientes
-      tr
-        td= cliente.nombre
-        td= cliente.email
-        td= cliente.telefono
-        td= cliente.descripcion
-        td
-          a(href="/api/v1/clients/"+ cliente.id) Editar
-          form(method="POST" action="/api/v1/clients/"+ cliente.id + "?_method=DELETE")
-            button Eliminar
-
+  .heading
+    h1 Clientes
+    a.button(href="/api/v1/clients/new") Nuevo cliente
+  if clientes.length === 0
+    p Aún no hay clientes. Crea el primero.
+  else
+    .table-scroll(tabindex="0" role="region" aria-label="Clientes")
+      table
+        caption.sr-only Datos de clientes y acciones
+        thead
+          tr
+            th(scope="col") Nombre
+            th(scope="col") Email
+            th(scope="col") Teléfono
+            th(scope="col") Categoría
+            th(scope="col") Acciones
+        tbody
+          each cliente in clientes
+            tr
+              td(data-label="Nombre")=cliente.nombre
+              td(data-label="Email")=cliente.email
+              td(data-label="Teléfono")=cliente.telefono
+              td(data-label="Categoría")=cliente.descripcion || 'Sin categoría'
+              td.actions(data-label="Acciones")
+                a(href="/api/v1/clients/"+cliente.id) Editar
+                form(method="POST" action="/api/v1/clients/"+cliente.id+"?_method=DELETE" data-submit-once data-confirm="¿Eliminar este cliente? Esta acción no se puede deshacer.")
+                  button.danger(type="submit") Eliminar

@@ -93,3 +93,6 @@ coverage/
 npm-debug.log*
 yarn-error.log*
 # local-development:end
+
+# Imágenes cargadas localmente; las imágenes originales del ejercicio se conservan.
+/metas/var/

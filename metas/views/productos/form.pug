@@ -1,0 +1,15 @@
+extends ../layout
+block content
+  a(href="/api/v1/products") ← Volver a productos
+  h1= producto.id ? 'Editar producto' : 'Nuevo producto'
+  if error
+    p.error(role="alert")=error
+  form.card(action=producto.id ? '/api/v1/products/'+producto.id+'?_method=PUT' : '/api/v1/products' method="POST" enctype="multipart/form-data" data-submit-once)
+    label(for="descripcion") Descripción
+    input#descripcion(name="descripcion" maxlength="255" required value=producto.descripcion autofocus)
+    label(for="picture") Imagen opcional
+    input#picture(type="file" name="picture" accept="image/png,image/jpeg,image/gif,image/webp" aria-describedby="imageHint")
+    p#imageHint.hint PNG, JPEG, GIF o WebP; hasta 5 MB. Al editar, dejar vacío conserva la imagen actual.
+    .actions
+      button(type="submit") Guardar producto
+      a(href="/api/v1/products") Cancelar

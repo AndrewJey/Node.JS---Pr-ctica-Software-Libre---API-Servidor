@@ -1,8 +1,15 @@
 extends layout
-
 block content
-  h1= title
-  p Welcome to #{title}
-
-  h3
-    a(href="/api/v1/products") Productos
+  h1 Administración de productos y clientes
+  p Crea y consulta productos, organiza tus clientes por categoría y revisa sus cantidades.
+  .cards
+    a.card-link(href="/api/v1/products")
+      h2 Productos
+      p Buscar, crear, editar y eliminar productos.
+    a.card-link(href="/api/v1/clients")
+      h2 Clientes
+      p Datos de contacto y categoría de cada cliente.
+    a.card-link(href="/api/v1/clients/categorias")
+      h2 Categorías
+      p Cantidades por categoría, incluidas las que aún están vacías.
+  p.hint Las metas conservan su endpoint de consulta JSON en /metas. Las pantallas de usuarios del ejercicio no constituyen un sistema de cuentas.

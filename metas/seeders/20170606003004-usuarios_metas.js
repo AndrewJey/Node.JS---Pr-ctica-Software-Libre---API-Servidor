@@ -18,7 +18,6 @@ module.exports = {
         usuario_id: 1,
       }], {});
   },
-  },
 
   down: function (queryInterface, Sequelize) {
     /*

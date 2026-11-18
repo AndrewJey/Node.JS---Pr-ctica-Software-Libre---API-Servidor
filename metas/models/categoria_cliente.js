@@ -5,11 +5,11 @@ module.exports = function (sequelize, DataTypes) {
 
   Categoria.all = function () {
     return sequelize.query(
-      "SELECT cc.descripcion , COUNT(*)::integer as cantidad_clientes " +
+      "SELECT cc.descripcion , COUNT(c.id)::integer as cantidad_clientes " +
       "FROM categoria_clientes cc " +
-      "INNER JOIN clientes c ON (c.categoria_cliente_id = cc.id) " +
-      "GROUP BY cc.descripcion " +
-      "ORDER BY cantidad_clientes DESC", { type: sequelize.QueryTypes.SELECT });
+      "LEFT JOIN clientes c ON (c.categoria_cliente_id = cc.id) " +
+      "GROUP BY cc.id, cc.descripcion " +
+      "ORDER BY cantidad_clientes DESC, cc.id ASC", { type: require('sequelize').QueryTypes.SELECT });
   };
   return Categoria;
 }

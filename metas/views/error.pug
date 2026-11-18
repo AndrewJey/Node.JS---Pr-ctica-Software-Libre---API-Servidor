@@ -1,6 +1,6 @@
 extends layout
-
 block content
-  h1= message
-  h2= error.status
-  pre #{error.stack}
+  h1 No se pudo completar la operación
+  p.error(role="alert")= message
+  p Código de respuesta: #{error.status}
+  a(href="/") Volver al inicio

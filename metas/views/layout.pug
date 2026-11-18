@@ -1,8 +1,18 @@
 doctype html
-html
+html(lang="es")
   head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-    script(src="/javascripts/jquery-3.2.1.min.js")
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    title= typeof title === 'string' ? title + ' · Metas' : 'Metas'
+    link(rel="stylesheet" href="/stylesheets/style.css")
+    script(src="/javascripts/forms.js" defer)
   body
-    block content
+    header.site-header
+      a.brand(href="/") Metas · Gestión local
+      nav(aria-label="Navegación principal")
+        a(href="/api/v1/products") Productos
+        a(href="/api/v1/clients") Clientes
+        a(href="/api/v1/clients/categorias") Categorías
+    main
+      block content
+    footer Prototipo de aprendizaje con PostgreSQL. Uso local; no implementa sesiones ni autorización.

@@ -9,7 +9,7 @@ module.exports = function(sequelize, DataTypes) {
     return sequelize.query(
       "select c.*, cc.descripcion " +
       "from clientes c " +
-      "left join categoria_clientes cc on (c.categoria_cliente_id = cc.id)", { type: sequelize.QueryTypes.SELECT});
+      "left join categoria_clientes cc on (c.categoria_cliente_id = cc.id)", { type: require('sequelize').QueryTypes.SELECT});
   };
 
   return Cliente;

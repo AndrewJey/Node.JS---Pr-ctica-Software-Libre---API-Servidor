@@ -1,0 +1,2 @@
+const path = require('node:path');
+module.exports = {config: path.join(__dirname, 'config/database.js')};

@@ -1,0 +1,21 @@
+extends ../layout
+block content
+  a(href="/api/v1/clients") ← Volver a clientes
+  h1=cliente.id ? 'Editar cliente' : 'Nuevo cliente'
+  if error
+    p.error(role="alert")=error
+  form.card(action=cliente.id ? '/api/v1/clients/'+cliente.id+'?_method=PUT' : '/api/v1/clients' method="POST" data-submit-once)
+    label(for="nombre") Nombre
+    input#nombre(name="nombre" maxlength="255" required value=cliente.nombre autocomplete="name" autofocus)
+    label(for="email") Email
+    input#email(name="email" type="email" maxlength="255" required value=cliente.email autocomplete="email")
+    label(for="telefono") Teléfono
+    input#telefono(name="telefono" type="tel" maxlength="50" required value=cliente.telefono autocomplete="tel")
+    label(for="categoria") Categoría
+    select#categoria(name="categoria_cliente_id")
+      option(value="") Sin categoría
+      each categoria in categorias
+        option(value=categoria.id selected=String(cliente.categoria_cliente_id)===String(categoria.id))=categoria.descripcion
+    .actions
+      button(type="submit") Guardar cliente
+      a(href="/api/v1/clients") Cancelar

@@ -1,60 +1,16 @@
 'use strict';
-
-module.exports = {
-  up: function (queryInterface, Sequelize) {
-    /*
-      Add altering commands here.
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.createTable('users', { id: Sequelize.INTEGER });
-      */
-      return queryInterface.createTable('usuario_meta_valor',
-      {
-        id: {
-          type: Sequelize.INTEGER,
-          primaryKey: true,
-          autoIncrement: true,
-          allowNull: false
-        },
-
-        usuario_meta_id: {
-          type: Sequelize.INTEGER,
-          references: {
-            model: 'usuario_meta',
-            key: 'id'
-          },
-          allowNull: false
-        },
-        cliente_id: {
-          type: Sequelize.INTEGER,
-          references: {
-            model: 'clientes',
-            key: 'id'
-          },
-          allowNull: false
-        },
-        valor: {
-          type: Sequelize.DOUBLE,
-          allowNull: false
-        },
-        createdAt: {
-          type: Sequelize.DATE
-        },
-        updatedAt: {
-          type: Sequelize.DATE
-        },
-      });
-    },
-
-    down: function (queryInterface, Sequelize) {
-    /*
-      Add reverting commands here.
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.dropTable('users');
-      */
-      return queryInterface.dropTable('usuario_meta_valor');
-    }
-  };
+module.exports={
+  // La migración anterior ya creó la tabla. Renombrar y ampliar conserva sus filas.
+  up:async(queryInterface,Sequelize)=>queryInterface.sequelize.transaction(async transaction=>{
+    const columns=await queryInterface.describeTable('usuario_meta_valor',{transaction});
+    if(columns.um_id && columns.usuario_meta_id) throw new Error('Existen ambas columnas de referencia; revisar los datos antes de migrar.');
+    if(columns.um_id) await queryInterface.renameColumn('usuario_meta_valor','um_id','usuario_meta_id',{transaction});
+    await queryInterface.changeColumn('usuario_meta_valor','valor',{type:Sequelize.DOUBLE,allowNull:false},{transaction});
+  }),
+  down:async(queryInterface,Sequelize)=>queryInterface.sequelize.transaction(async transaction=>{
+    const [rows]=await queryInterface.sequelize.query('SELECT 1 FROM usuario_meta_valor WHERE valor <> trunc(valor) OR valor < -2147483648 OR valor > 2147483647 LIMIT 1',{transaction});
+    if(rows.length) throw new Error('El rollback perdería valores decimales o fuera de rango.');
+    await queryInterface.changeColumn('usuario_meta_valor','valor',{type:Sequelize.INTEGER,allowNull:false},{transaction});
+    await queryInterface.renameColumn('usuario_meta_valor','usuario_meta_id','um_id',{transaction});
+  })
+};

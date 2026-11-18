@@ -1,102 +1,48 @@
-var express = require('express');
-var router = express.Router();
-var models = require('../models');
+'use strict';
+const router = require('express').Router();
+const models = require('../models');
+const {wantsJSON, text, record} = require('../lib/http');
+const {savePicture, removePicture} = require('../lib/uploads');
 
-
-var criteria = function(req) {
-  return { where: {id: req.params.id} };
-}
-
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.format({
-    json: function () {
-      models.productos.findAll().then(productos => {
-        res.json({productos: productos});
-      });
-    },
-    html: function () {
-      models.productos.findAll().then(productos => {
-        res.render('productos/index_ajax', { productos: productos });
-      });
-    }
-  });
+router.get('/', async (req,res) => {
+  if (!wantsJSON(req)) return res.render('productos/index_ajax');
+  res.set('Cache-Control','no-store');
+  res.json({productos:await models.productos.findAll({order:[['id','ASC']]})});
 });
-
-router.get('/new', function(req, res, next) {
-  res.render('productos/new');
+router.get('/new', (req,res) => res.render('productos/form',{producto:{},error:''}));
+router.get('/:id', async (req,res) => {
+  const producto = await record(models.productos,req.params.id);
+  if (wantsJSON(req)) return res.json(producto);
+  res.render('productos/form',{producto,error:''});
 });
-
-router.get('/:id', function(req, res, next) {
-  var producto = models.productos.findOne(criteria(req));
-  res.format({
-    json: function() {
-      producto.then(producto => {
-        res.json(producto);
-      });
-    },
-    html: function () {
-      producto.then(producto => {
-        res.render('productos/edit', { producto: producto });   
-      });
-    }
-  })
-  
-});
-
-router.post('/', function(req, res, next) {
-  if(req.files){
-    var picture = req.files.picture;
-    req.body.picture = '/images/' + picture.name;
+async function save(req,res,editing) {
+  let picture;
+  try {
+    const product = editing ? await record(models.productos,req.params.id) : null;
+    const descripcion = text(req.body?.descripcion,'La descripción');
+    picture = await savePicture(req.files?.picture);
+    const previous = product?.picture;
+    const data = {descripcion};
+    if (picture || !editing) data.picture = picture || '';
+    const saved = editing ? await product.update(data) : await models.productos.create(data);
+    if (picture && previous) await removePicture(previous,models.productos);
+    if (wantsJSON(req)) return res.status(editing?200:201).json(saved);
+    res.redirect(303,'/api/v1/products');
+  } catch(error) {
+    if (picture) await removePicture(picture,models.productos);
+    if (!wantsJSON(req) && error.status === 400) return res.status(400).render('productos/form',{
+      producto:{descripcion:req.body?.descripcion || '',id:editing?req.params.id:undefined},error:error.message});
+    throw error;
   }
-  var producto = models.productos.create(req.body);
-  res.format({
-    json: function () {
-      producto.then(producto => {
-        res.json(producto);
-      });
-    },
-    html: function () {
-      picture.mv('public/images/' + picture.name, function(err) {
-        if (err)
-          return res.status(500).send(err);
-        producto.then(producto => {
-          res.redirect('/api/v1/products');
-        });  
-      });
-    }
-  })
+}
+router.post('/', (req,res) => save(req,res,false));
+router.put('/:id', (req,res) => save(req,res,true));
+router.delete('/:id', async (req,res) => {
+  const product = await record(models.productos,req.params.id);
+  const picture = product.picture;
+  await product.destroy();
+  await removePicture(picture,models.productos);
+  if (wantsJSON(req)) return res.json({status:'ok'});
+  res.redirect(303,'/api/v1/products');
 });
-
-router.delete('/:id', function(req, res, next) {
-  res.format({
-    json: function() {
-      models.productos.destroy(criteria(req)).then(() => {
-        res.json({status: 'ok'});
-      });
-    },
-    html: function () {
-      models.productos.destroy(criteria(req)).then(() => {
-        res.redirect('/api/v1/products');
-      });
-    }
-  });
-});
-
-router.put('/:id', function(req, res, next) {
-  res.format({
-    json: function () {
-      models.productos.update(req.body, criteria(req)).then(producto => {
-        res.json(producto);
-      });
-    },
-    html: function () {
-      models.productos.update(req.body, criteria(req)).then(producto => {
-        res.redirect('/api/v1/products');
-      });
-    }
-  });
-});
-
-
-module.exports = router;
+module.exports=router;
